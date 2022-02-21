@@ -4,8 +4,6 @@
  */
 #ifndef WEATHER_H
 #define WEATHER_H
-#include <stdint.h>
-#include <CRC32.h>
 
 class Weather {
 private:
