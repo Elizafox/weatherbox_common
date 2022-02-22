@@ -21,7 +21,7 @@ private:
     struct weather_t {
       int16_t temperature;         // Multiplied by 100
       uint16_t humidity;           // Multiplied by 100
-      uint16_t pressure;           // Multiplied by 100
+      uint32_t pressure;           // Multiplied by 100
       uint16_t aqi;                // Multiplied by 100
       uint16_t co2e;               // Multiplied by 100
       uint16_t breath_voce;        // Multiplied by 100
