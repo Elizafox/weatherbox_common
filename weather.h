@@ -5,6 +5,8 @@
 #ifndef WEATHER_H
 #define WEATHER_H
 
+#include <ArduinoJson.h>
+
 class Weather {
 private:
   // WARNING: THIS MUST BE CHANGED ON BOTH SIDES
@@ -49,6 +51,60 @@ public:
 
   Weather() {
     memset(&packet, 0, sizeof(packet_t));
+  }
+
+  void from_json(const char* data) {
+    DynamicJsonDocument doc(2048);
+    deserializeJson(doc, data);
+
+    JsonObject obj = doc.as<JsonObject>();
+    JsonObject td = obj["td"];
+
+    set_year(td["year"]);
+    set_month(td["month"]);
+    set_day(td["day"]);
+    set_hour(td["hour"]);
+    set_minute(td["minute"]);
+    set_second(td["second"]);
+    set_msec(td["msec"]);
+
+    JsonObject wd = obj["wd"];
+    set_temperature(wd["temperature"]);
+    set_humidity(wd["humidity"]);
+    set_pressure(wd["pressure"]);
+    set_aqi(wd["aqi"]);
+    set_co2e(wd["co2e"]);
+    set_breath_voce(wd["breath_voce"]);
+    set_uv(wd["uv"]);
+    set_wind(wd["wind"]);
+    set_wind_direction(wd["wind_direction"]);
+    set_rainfall_per_hour(wd["rainfall_per_hour"]);
+  }
+
+  void to_json(String &str) {
+    DynamicJsonDocument doc(2048);
+    JsonObject td = doc.createNestedObject("time");
+    td["year"] = get_year();
+    td["month"] = get_month();
+    td["day"] = get_day();
+    td["hour"] = get_hour();
+    td["minute"] = get_minute();
+    td["second"] = get_second();
+    td["msec"] = get_msec();
+
+    JsonObject wd = doc.createNestedObject("weather");
+    wd["temperature"] = get_temperature();
+    wd["humidity"] = get_humidity();
+    wd["pressure"] = get_pressure();
+    wd["aqi"] = get_aqi();
+    wd["co2e"] = get_co2e();
+    wd["breath_voce"] = get_breath_voce();
+    wd["uv"] = get_uv();
+    wd["wind"] = get_wind();
+    wd["wind_direction"] = get_wind_direction();
+    wd["rainfall_per_hour"] = get_rainfall_per_hour();
+
+    serializeJson(doc, str);
   }
 
   // Getter methods //
